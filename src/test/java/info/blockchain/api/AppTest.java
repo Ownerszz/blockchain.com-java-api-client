@@ -2,6 +2,7 @@ package info.blockchain.api;
 
 import info.blockchain.api.blockexplorer.BlockExplorerAsyncTest;
 import info.blockchain.api.blockexplorer.BlockExplorerTest;
+import info.blockchain.api.exchangeRates.ExchangeRatesTest;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -11,7 +12,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         BlockExplorerTest.class,
-        BlockExplorerAsyncTest.class
+        BlockExplorerAsyncTest.class,
+        ExchangeRatesTest.class
 })
 public class AppTest extends TestCase {
     /**

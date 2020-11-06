@@ -2,6 +2,8 @@
 
 The `receive` package contains the `Receive` class that reflects the functionality documented at https://blockchain.info/api/api_receive. It allows merchants to derive addresses from their HD wallets and be notified upon payment.
 
+All methods have an Async version.
+
 Example usage:
 
 ```java

@@ -2,6 +2,8 @@
 
 The `blockexplorer` package contains the `BlockExplorer` class that reflects the functionality documented at  https://blockchain.info/api/blockchain_api. It can be used to query the block chain, fetch block, transaction and address data, get unspent outputs for an address etc.
 
+All methods also have an Async version
+
 Example usage:
 
 ```java

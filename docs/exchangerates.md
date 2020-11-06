@@ -2,6 +2,8 @@
 
 The `exchangerates` package contains the `ExchangeRates` class that reflects the functionality documented at https://blockchain.info/api/exchange_rates_api. It allows users to get price tickers for most major currencies and directly convert fiat amounts to BTC.
 
+All methods have an Async version.
+
 Example usage:
 
 ```java

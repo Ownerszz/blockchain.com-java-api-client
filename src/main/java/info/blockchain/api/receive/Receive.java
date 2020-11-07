@@ -60,8 +60,11 @@ public class Receive {
     public Future<ReceiveResponse> receiveAsync (String xPUB, String callbackUrl) throws APIException, IOException {
         CompletableFuture<ReceiveResponse> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(receive(xPUB, callbackUrl));
-            return null;
+            try {
+                completableFuture.complete(receive(xPUB, callbackUrl));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         } );
         return completableFuture;
     }
@@ -94,8 +97,11 @@ public class Receive {
     public Future<Integer> checkGapAsync (String xPUB) throws APIException, IOException {
         CompletableFuture<Integer> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(checkGap(xPUB));
-            return null;
+            try {
+                completableFuture.complete(checkGap(xPUB));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         } );
         return completableFuture;
     }
@@ -129,8 +135,11 @@ public class Receive {
     public Future<CallbackLog> getCallbackLogAsync (String callbackUrl) throws APIException, IOException {
         CompletableFuture<CallbackLog> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getCallbackLog(callbackUrl));
-            return null;
+            try {
+                completableFuture.complete(getCallbackLog(callbackUrl));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         } );
         return completableFuture;
     }

@@ -40,9 +40,6 @@ public class BlockExplorerAsyncTest {
         Future<Address> addressFuture = client.getAddressAsync("1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW", FilterType.All, 10, null);
         while (!addressFuture.isDone()){
             waitCounter++;
-            if (waitCounter > 1000){
-                fail("Time out");
-            }
         }
         assertTrue("The getAddressAsync must run Async", waitCounter > 0);
         Address address = addressFuture.get();

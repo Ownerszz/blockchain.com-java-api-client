@@ -56,8 +56,11 @@ public class Statistics {
     public Future<StatisticsResponse> getStatsAsync () throws APIException, IOException {
         CompletableFuture<StatisticsResponse> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getStats());
-            return null;
+            try {
+                completableFuture.complete(getStats());
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -102,8 +105,11 @@ public class Statistics {
     public Future<Chart> getChartAsync(String type, String timeSpan, String rollingAverage) throws APIException, IOException {
         CompletableFuture<Chart> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getChart(type, timeSpan, rollingAverage));
-            return null;
+            try {
+                completableFuture.complete(getChart(type, timeSpan, rollingAverage));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -143,8 +149,11 @@ public class Statistics {
     public Future<Map<String, Integer>> getPoolsAsync(String timeSpan) throws APIException, IOException {
         CompletableFuture<Map<String, Integer>> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getPools(timeSpan));
-            return null;
+            try {
+                completableFuture.complete(getPools(timeSpan));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }

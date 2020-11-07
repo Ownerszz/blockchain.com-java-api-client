@@ -69,8 +69,11 @@ public class ExchangeRates {
     public Future<Map<String, Currency>> getTickerAsync () throws APIException, IOException {
         CompletableFuture<Map<String, Currency>> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getTicker());
-            return null;
+            try {
+                completableFuture.complete(getTicker());
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -106,8 +109,11 @@ public class ExchangeRates {
     public Future<BigDecimal> toBTCAsync (String currency, BigDecimal value) throws APIException, IOException {
         CompletableFuture<BigDecimal> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(toBTC(currency, value));
-            return null;
+            try {
+                completableFuture.complete(toBTC(currency, value));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -143,8 +149,11 @@ public class ExchangeRates {
     public Future<BigDecimal> toFiatAsync (String currency, BigDecimal value) throws APIException, IOException {
         CompletableFuture<BigDecimal> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(toFiat(currency, value));
-            return null;
+            try {
+                completableFuture.complete(toFiat(currency, value));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }

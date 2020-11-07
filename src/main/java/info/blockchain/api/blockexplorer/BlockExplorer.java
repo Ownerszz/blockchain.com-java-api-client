@@ -71,8 +71,11 @@ public class BlockExplorer {
     public Future<Transaction> getTransactionAsync (String txHash) throws APIException, IOException {
         CompletableFuture<Transaction> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getTransaction(txHash));
-            return null;
+            try {
+                completableFuture.complete(getTransaction(txHash));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -113,8 +116,11 @@ public class BlockExplorer {
     public Future<Block> getBlockAsync (String blockHash) throws APIException, IOException {
         CompletableFuture<Block> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getBlock(blockHash));
-            return null;
+            try {
+                completableFuture.complete(getBlock(blockHash));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -159,8 +165,11 @@ public class BlockExplorer {
     public Future<Address> getAddressAsync (String address, FilterType filter, Integer limit, Integer offset) throws APIException, IOException {
         CompletableFuture<Address> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getAddress(address, filter, limit, offset));
-            return null;
+            try {
+                completableFuture.complete(getAddress(address, filter, limit, offset));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -219,8 +228,11 @@ public class BlockExplorer {
     public Future<List<Block>> getBlocksAtHeightAsync (long height) throws APIException, IOException {
         CompletableFuture<List<Block>> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getBlocksAtHeight(height));
-            return null;
+            try {
+                completableFuture.complete(getBlocksAtHeight(height));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -277,8 +289,11 @@ public class BlockExplorer {
     public Future<List<UnspentOutput>> getUnspentOutputsAsync (List<String> addressList, Integer confirms, Integer limit) throws APIException, IOException {
         CompletableFuture<List<UnspentOutput>> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getUnspentOutputs(addressList, confirms, limit));
-            return null;
+            try {
+                completableFuture.complete(getUnspentOutputs(addressList, confirms, limit));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -326,8 +341,11 @@ public class BlockExplorer {
     public Future<LatestBlock> getLatestBlockAsync () throws APIException, IOException {
         CompletableFuture<LatestBlock> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getLatestBlock());
-            return null;
+            try {
+                completableFuture.complete(getLatestBlock());
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -361,8 +379,11 @@ public class BlockExplorer {
     public Future<List<Transaction>> getUnconfirmedTransactionsAsync () throws APIException, IOException {
         CompletableFuture<List<Transaction>> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getUnconfirmedTransactions());
-            return null;
+            try {
+                completableFuture.complete(getUnconfirmedTransactions());
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -408,8 +429,11 @@ public class BlockExplorer {
     public Future<List<SimpleBlock>> getBlocksAsync (long timestamp) throws APIException, IOException {
         CompletableFuture<List<SimpleBlock>> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getBlocks(timestamp));
-            return null;
+            try {
+                completableFuture.complete(getBlocks(timestamp));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -445,8 +469,11 @@ public class BlockExplorer {
     public Future<List<SimpleBlock>> getBlocksAsync (String poolName) throws APIException, IOException {
         CompletableFuture<List<SimpleBlock>> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getBlocks(poolName));
-            return null;
+            try {
+                completableFuture.complete(getBlocks(poolName));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -488,8 +515,11 @@ public class BlockExplorer {
     public Future<Map<String, Balance>> getBalanceAsync(List<String> addressList, FilterType filter) throws APIException, IOException {
         CompletableFuture<Map<String, Balance>> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getBalance(addressList, filter));
-            return null;
+            try {
+                completableFuture.complete(getBalance(addressList, filter));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -537,8 +567,11 @@ public class BlockExplorer {
     public Future<MultiAddress> getMultiAddressAsync(List<String> addressList, FilterType filter, Integer limit, Integer offset) throws APIException, IOException {
         CompletableFuture<MultiAddress> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getMultiAddress(addressList, filter, limit, offset));
-            return null;
+            try {
+                completableFuture.complete(getMultiAddress(addressList, filter, limit, offset));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }
@@ -570,8 +603,11 @@ public class BlockExplorer {
     public Future<XpubFull> getXpubAsync(String xpub, FilterType filter, Integer limit, Integer offset) throws APIException, IOException {
         CompletableFuture<XpubFull> completableFuture = new CompletableFuture<>();
         Executors.newCachedThreadPool().submit(() -> {
-            completableFuture.complete(getXpub(xpub, filter, limit, offset));
-            return null;
+            try {
+                completableFuture.complete(getXpub(xpub, filter, limit, offset));
+            } catch (APIException | IOException e) {
+                completableFuture.completeExceptionally(e);
+            }
         });
         return completableFuture;
     }

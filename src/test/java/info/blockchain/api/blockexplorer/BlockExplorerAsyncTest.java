@@ -1,6 +1,8 @@
 package info.blockchain.api.blockexplorer;
 
+import info.blockchain.api.AppTest;
 import info.blockchain.api.blockexplorer.entity.*;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +27,22 @@ public class BlockExplorerAsyncTest {
         client = new BlockExplorer();
     }
 
+    @After
+    public void after() throws InterruptedException {
+        if (AppTest.wait){
+            Thread.sleep(AppTest.waitTime);
+        }
+    }
+
     @Test
     public void getAddressAsync () throws Exception {
         int waitCounter = 0;
         Future<Address> addressFuture = client.getAddressAsync("1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW", FilterType.All, 10, null);
         while (!addressFuture.isDone()){
             waitCounter++;
+            if (waitCounter > 1000){
+                fail("Time out");
+            }
         }
         assertTrue("The getAddressAsync must run Async", waitCounter > 0);
         Address address = addressFuture.get();
@@ -41,7 +53,7 @@ public class BlockExplorerAsyncTest {
         assertTrue("Requires more than 0 transactions", address.getTxCount() > 0);
         assertTrue("Requires more than 20000 satoshis received", address.getTotalReceived() > 2000);
         assertTrue("Requires more than 20000 satoshis sent", address.getTotalSent() > 2000);
-        assertTrue("Requires less than or 10 transactions", address.getTransactions().size() <= 10);    }
+        assertTrue("Requires less than or 10 transactions because of limit", address.getTransactions().size() <= 10);    }
 
     @Test
     public void getUnspentOutputsAsync () throws Exception {

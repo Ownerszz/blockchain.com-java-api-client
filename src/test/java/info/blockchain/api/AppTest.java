@@ -2,6 +2,7 @@ package info.blockchain.api;
 
 import info.blockchain.api.blockexplorer.BlockExplorerAsyncTest;
 import info.blockchain.api.blockexplorer.BlockExplorerTest;
+import info.blockchain.api.exchangeRates.ExchangeRatesAsyncTest;
 import info.blockchain.api.exchangeRates.ExchangeRatesTest;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -13,9 +14,12 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         BlockExplorerTest.class,
         BlockExplorerAsyncTest.class,
-        ExchangeRatesTest.class
+        ExchangeRatesTest.class,
+        ExchangeRatesAsyncTest.class
 })
 public class AppTest extends TestCase {
+    public static final int waitTime  = 10 * 1000;
+    public static final boolean wait = false;
     /**
      * Create the test case
      *

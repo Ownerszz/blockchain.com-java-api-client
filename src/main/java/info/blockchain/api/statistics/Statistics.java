@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * This class reflects the functionality documented
@@ -45,6 +48,21 @@ public class Statistics {
     }
 
     /**
+     * Gets the network statistics.
+     *
+     * @return An instance of the StatisticsResponse class
+     * @throws APIException If the server returns an error
+     */
+    public Future<StatisticsResponse> getStatsAsync () throws APIException, IOException {
+        CompletableFuture<StatisticsResponse> completableFuture = new CompletableFuture<>();
+        Executors.newCachedThreadPool().submit(() -> {
+            completableFuture.complete(getStats());
+            return null;
+        });
+        return completableFuture;
+    }
+
+    /**
      * This method can be used to get and manipulate data behind all Blockchain.info's charts.
      *
      * @param type of chart (Example: transactions-per-second, total-bitcoins)
@@ -73,6 +91,24 @@ public class Statistics {
     }
 
     /**
+     * This method can be used to get and manipulate data behind all Blockchain.info's charts.
+     *
+     * @param type of chart (Example: transactions-per-second, total-bitcoins)
+     * @param timeSpan (Example: 5weeks)
+     * @param rollingAverage (Example: 8hours)
+     * @return {@code Chart} represents the series of data of the chart
+     * @throws APIException If the server returns an error
+     */
+    public Future<Chart> getChartAsync(String type, String timeSpan, String rollingAverage) throws APIException, IOException {
+        CompletableFuture<Chart> completableFuture = new CompletableFuture<>();
+        Executors.newCachedThreadPool().submit(() -> {
+            completableFuture.complete(getChart(type, timeSpan, rollingAverage));
+            return null;
+        });
+        return completableFuture;
+    }
+
+    /**
      * This method can be used to get the data behind Blockchain.info's pools information.
      *
      * @param timeSpan (Example: 5weeks)
@@ -95,6 +131,22 @@ public class Statistics {
         Map<String, Integer> pools = gson.fromJson(response, type);
 
         return pools;
+    }
+
+    /**
+     * This method can be used to get the data behind Blockchain.info's pools information.
+     *
+     * @param timeSpan (Example: 5weeks)
+     * @return a map of pool name and the number of blocks it mined
+     * @throws APIException If the server returns an error
+     */
+    public Future<Map<String, Integer>> getPoolsAsync(String timeSpan) throws APIException, IOException {
+        CompletableFuture<Map<String, Integer>> completableFuture = new CompletableFuture<>();
+        Executors.newCachedThreadPool().submit(() -> {
+            completableFuture.complete(getPools(timeSpan));
+            return null;
+        });
+        return completableFuture;
     }
 
 }

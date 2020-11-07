@@ -12,7 +12,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import info.blockchain.api.AppTest;
+import info.blockchain.api.blockexplorer.entity.XpubFull;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,13 +53,20 @@ public class ExchangeRatesAsyncTest {
      */
     @Test
     public void getTickerResponseIsNotEmptyAsync() throws Exception {
-        Future<Map<String, Currency>> tickerAsync = exchange.getTickerAsync();
-        int waitCounter = 0;
-        while (!tickerAsync.isDone()){
-            waitCounter++;
+        Map<String, Currency> ticker = null;
+        try {
+            Future<Map<String, Currency>> tickerAsync = exchange.getTickerAsync();
+            int waitCounter = 0;
+            while (!tickerAsync.isDone()){
+                waitCounter++;
+            }
+            assertTrue("The getTickerAsync must run Async", waitCounter > 0);
+            ticker = tickerAsync.get();
+        }catch (APIException e){
+            Assume.assumeNoException(e);
         }
-        assertTrue("The getTickerAsync must run Async", waitCounter > 0);
-        Map<String, Currency> ticker = tickerAsync.get();
+
+
         assertFalse(ticker.isEmpty());
     }
 
@@ -68,13 +77,18 @@ public class ExchangeRatesAsyncTest {
     @Test
     public void testGetTickerResponseCurrencyValueIsNotNullAsync() throws Exception {
 
-        Future<Map<String, Currency>> tickerAsync = exchange.getTickerAsync();
-        int waitCounter = 0;
-        while (!tickerAsync.isDone()){
-            waitCounter++;
+        Map<String, Currency> ticker = null;
+        try {
+            Future<Map<String, Currency>> tickerAsync = exchange.getTickerAsync();
+            int waitCounter = 0;
+            while (!tickerAsync.isDone()){
+                waitCounter++;
+            }
+            assertTrue("The getTickerAsync must run Async", waitCounter > 0);
+            ticker = tickerAsync.get();
+        }catch (APIException e){
+            Assume.assumeNoException(e);
         }
-        assertTrue("The getTickerAsync must run Async", waitCounter > 0);
-        Map<String, Currency> ticker = tickerAsync.get();
 
         final String currencyKey1 = "USD";
         final String currencyKey2 = "GBP";
@@ -108,13 +122,22 @@ public class ExchangeRatesAsyncTest {
      */
     @Test
     public void testToBTCisOperationalAsync() throws Exception {
-        Future<BigDecimal> toBTCasync = exchange.toBTCAsync("USD", new BigDecimal("8512.76"));
-        int waitCounter = 0;
-        while (!toBTCasync.isDone()){
-            waitCounter++;
+
+        BigDecimal value = null;
+        try {
+            Future<BigDecimal> toBTCasync = exchange.toBTCAsync("USD", new BigDecimal("8512.76"));
+            int waitCounter = 0;
+            while (!toBTCasync.isDone()){
+                waitCounter++;
+            }
+            assertTrue("The toBTCAsync must run Async", waitCounter > 0);
+            value = toBTCasync.get();
+        }catch (APIException e){
+            Assume.assumeNoException(e);
         }
-        assertTrue("The toBTCAsync must run Async", waitCounter > 0);
-        assertNotNull(toBTCasync.get());
+
+
+        assertNotNull(value);
 
     }
 

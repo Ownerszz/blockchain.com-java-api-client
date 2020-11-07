@@ -1,16 +1,16 @@
 package info.blockchain.api.blockexplorer;
 
+
+import info.blockchain.api.APIException;
 import info.blockchain.api.AppTest;
 import info.blockchain.api.blockexplorer.entity.*;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static org.junit.Assert.*;
@@ -23,7 +23,7 @@ public class BlockExplorerAsyncTest {
     BlockExplorer client;
 
     @Before
-    public void setUp () throws Exception {
+    public void setUp () throws Throwable {
         client = new BlockExplorer();
     }
 
@@ -35,14 +35,24 @@ public class BlockExplorerAsyncTest {
     }
 
     @Test
-    public void getAddressAsync () throws Exception {
-        int waitCounter = 0;
-        Future<Address> addressFuture = client.getAddressAsync("1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW", FilterType.All, 10, null);
-        while (!addressFuture.isDone()){
-            waitCounter++;
+    public void getAddressAsync () throws Throwable {
+        Address address = null;
+        try {
+            int waitCounter = 0;
+            Future<Address> addressFuture = client.getAddressAsync("1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW", FilterType.All, 10, null);
+            while (!addressFuture.isDone()){
+                waitCounter++;
+            }
+            assertTrue("The getAddressAsync must run Async", waitCounter > 0);
+            address = addressFuture.get();
+        }catch (ExecutionException e){
+            if (e.getCause().getClass() == APIException.class){
+                Assume.assumeNoException(e.getCause());
+            }else {
+                throw e.getCause();
+            }
         }
-        assertTrue("The getAddressAsync must run Async", waitCounter > 0);
-        Address address = addressFuture.get();
+
         assertEquals("1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW", address.getAddress());
         assertEquals("07feead7f9fb7d16a0251421ac9fa090169cc169",
                 address.getHash160());
@@ -53,34 +63,53 @@ public class BlockExplorerAsyncTest {
         assertTrue("Requires less than or 10 transactions because of limit", address.getTransactions().size() <= 10);    }
 
     @Test
-    public void getUnspentOutputsAsync () throws Exception {
+    public void getUnspentOutputsAsync () throws Throwable {
         String address1 = "1FrWWFJ95Jq7EDgpkeBwVLAtoJMPwmYS7T";
         String address2 = "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn";
-        int waitCounter = 0;
-        Future<List<UnspentOutput>> listFuture = client.getUnspentOutputsAsync(Arrays.asList(address1, address2), 6, 10);
-        while (!listFuture.isDone()){
-            waitCounter++;
+        List<UnspentOutput> unspentOutputs = null;
+        try {
+            int waitCounter = 0;
+            Future<List<UnspentOutput>> listFuture = client.getUnspentOutputsAsync(Arrays.asList(address1, address2), 6, 10);
+            while (!listFuture.isDone()){
+                waitCounter++;
+            }
+            assertTrue("The getUnspentOutputsAsync must run Async", waitCounter > 0);
+            unspentOutputs = listFuture.get();
+        }catch (ExecutionException e){
+            if (e.getCause().getClass() == APIException.class){
+                Assume.assumeNoException(e.getCause());
+            }else {
+                throw e.getCause();
+            }
         }
-        assertTrue("The getUnspentOutputsAsync must run Async", waitCounter > 0);
-        List<UnspentOutput> unspentOutputs = listFuture.get();
+
         assertTrue(unspentOutputs != null && unspentOutputs.size() != 0);
         assertEquals("2e7ab41818ee0ab987d393d4c8bf5e436b6e8c15ef3535a2b3eac581e33c7472", unspentOutputs.get(0).getTransactionHash());
         assertEquals(20000, unspentOutputs.get(0).getValue());
     }
 
     @Test
-    public void getBalanceAsync () throws Exception {
+    public void getBalanceAsync () throws Throwable {
         String address1 = "1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW";
         String address2 = "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn";
-
-        List<String> list = Arrays.asList(address1, address2);
-        int waitCounter = 0;
-        Future<Map<String, Balance>> mapFuture = client.getBalanceAsync(list, FilterType.All);
-        while (!mapFuture.isDone()){
-            waitCounter++;
+        Map<String, Balance> balances = null;
+        try {
+            List<String> list = Arrays.asList(address1, address2);
+            int waitCounter = 0;
+            Future<Map<String, Balance>> mapFuture = client.getBalanceAsync(list, FilterType.All);
+            while (!mapFuture.isDone()){
+                waitCounter++;
+            }
+            assertTrue("The getBalanceAsync must run Async", waitCounter > 0);
+            balances = mapFuture.get();
+        }catch (ExecutionException e){
+            if (e.getCause().getClass() == APIException.class){
+                Assume.assumeNoException(e.getCause());
+            }else {
+                throw e.getCause();
+            }
         }
-        assertTrue("The getBalanceAsync must run Async", waitCounter > 0);
-        Map<String, Balance> balances = mapFuture.get();
+
 
         assertEquals("Requires a 0 final balance",0, balances.get(address1).getFinalBalance());
         assertTrue("Requires more than 0 transactions", balances.get(address1).getTxCount() > 0);
@@ -91,17 +120,27 @@ public class BlockExplorerAsyncTest {
     }
 
     @Test
-    public void getMultiAddressAsync () throws Exception {
+    public void getMultiAddressAsync () throws Throwable {
         String address1 = "1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW";
         String address2 = "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn";
         List<String> list = Arrays.asList(address1, address2);
-        int waitCounter = 0;
-        Future<MultiAddress> multiAddressFuture = client.getMultiAddressAsync(list, FilterType.All, null, null);
-        while (!multiAddressFuture.isDone()){
-            waitCounter++;
+        MultiAddress multiAddress = null;
+        try {
+            int waitCounter = 0;
+            Future<MultiAddress> multiAddressFuture = client.getMultiAddressAsync(list, FilterType.All, null, null);
+            while (!multiAddressFuture.isDone()){
+                waitCounter++;
+            }
+            assertTrue("The getMultiAddressAsync must run Async", waitCounter > 0);
+            multiAddress = multiAddressFuture.get();
+        }catch (ExecutionException e){
+            if (e.getCause().getClass() == APIException.class){
+                Assume.assumeNoException(e.getCause());
+            }else {
+                throw e.getCause();
+            }
         }
-        assertTrue("The getMultiAddressAsync must run Async", waitCounter > 0);
-        MultiAddress multiAddress = multiAddressFuture.get();
+
 
         //Addresses
         Optional<AddressSummary> addressSummary1 = multiAddress.getAddresses().stream().filter(e -> e.getAddress().equals(address1)).findFirst();
@@ -119,16 +158,27 @@ public class BlockExplorerAsyncTest {
     }
 
     @Test
-    public void getXpubAsync () throws Exception {
+    public void getXpubAsync () throws Throwable {
         String address = "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn";
-        int waitCounter = 0;
-        Future<XpubFull> xpubFullFuture = client.getXpubAsync(address, null, null, null);
-        while (!xpubFullFuture.isDone()){
-            waitCounter++;
-        }
-        assertTrue("The getXpubAsync must run Async", waitCounter > 0);
+        XpubFull xpub = null;
+        try {
+            int waitCounter = 0;
+            Future<XpubFull> xpubFullFuture = client.getXpubAsync(address, null, null, null);
+            while (!xpubFullFuture.isDone()){
+                waitCounter++;
+            }
+            assertTrue("The getXpubAsync must run Async", waitCounter > 0);
 
-        XpubFull xpub = xpubFullFuture.get();
+            xpub = xpubFullFuture.get();
+        }catch (ExecutionException e){
+            if (e.getCause().getClass() == APIException.class){
+                Assume.assumeNoException(e.getCause());
+            }else {
+                throw e.getCause();
+            }
+        }
+
+
 
         assertEquals(xpub.getAddress(),
                 "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn");

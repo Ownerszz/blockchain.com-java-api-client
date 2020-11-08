@@ -151,8 +151,6 @@ public class ExchangeRatesAsyncTest {
             }
         }
 
-
-
         assertNotNull(value);
 
     }

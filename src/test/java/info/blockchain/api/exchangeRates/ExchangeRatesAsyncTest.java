@@ -52,7 +52,7 @@ public class ExchangeRatesAsyncTest {
      * @throws Exception
      */
     @Test
-    public void getTickerResponseIsNotEmptyAsync() throws Exception {
+    public void getTickerResponseIsNotEmptyAsync() throws Throwable {
         Map<String, Currency> ticker = null;
         try {
             Future<Map<String, Currency>> tickerAsync = exchange.getTickerAsync();
@@ -62,9 +62,14 @@ public class ExchangeRatesAsyncTest {
             }
             assertTrue("The getTickerAsync must run Async", waitCounter > 0);
             ticker = tickerAsync.get();
-        }catch (APIException e){
-            Assume.assumeNoException(e);
+        }catch (ExecutionException e){
+            if (e.getCause().getClass() == APIException.class){
+                Assume.assumeNoException(e.getCause());
+            }else {
+                throw e.getCause();
+            }
         }
+
 
 
         assertFalse(ticker.isEmpty());
@@ -75,7 +80,7 @@ public class ExchangeRatesAsyncTest {
      * @throws Exception
      */
     @Test
-    public void testGetTickerResponseCurrencyValueIsNotNullAsync() throws Exception {
+    public void testGetTickerResponseCurrencyValueIsNotNullAsync() throws Throwable {
 
         Map<String, Currency> ticker = null;
         try {
@@ -86,11 +91,16 @@ public class ExchangeRatesAsyncTest {
             }
             assertTrue("The getTickerAsync must run Async", waitCounter > 0);
             ticker = tickerAsync.get();
-        }catch (APIException e){
-            Assume.assumeNoException(e);
+        }catch (ExecutionException e){
+        if (e.getCause().getClass() == APIException.class){
+            Assume.assumeNoException(e.getCause());
+        }else {
+            throw e.getCause();
         }
+    }
 
-        final String currencyKey1 = "USD";
+
+    final String currencyKey1 = "USD";
         final String currencyKey2 = "GBP";
 
         if(ticker.containsKey(currencyKey1)) {
@@ -121,7 +131,7 @@ public class ExchangeRatesAsyncTest {
      * @throws Exception
      */
     @Test
-    public void testToBTCisOperationalAsync() throws Exception {
+    public void testToBTCisOperationalAsync() throws Throwable {
 
         BigDecimal value = null;
         try {
@@ -132,9 +142,14 @@ public class ExchangeRatesAsyncTest {
             }
             assertTrue("The toBTCAsync must run Async", waitCounter > 0);
             value = toBTCasync.get();
-        }catch (APIException e){
-            Assume.assumeNoException(e);
+        }catch (ExecutionException e){
+            if (e.getCause().getClass() == APIException.class){
+                Assume.assumeNoException(e.getCause());
+            }else {
+                throw e.getCause();
+            }
         }
+
 
 
         assertNotNull(value);

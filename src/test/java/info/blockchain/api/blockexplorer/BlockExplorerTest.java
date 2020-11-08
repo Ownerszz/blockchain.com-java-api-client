@@ -1,16 +1,16 @@
 package info.blockchain.api.blockexplorer;
 
+import info.blockchain.api.APIException;
 import info.blockchain.api.AppTest;
 import info.blockchain.api.blockexplorer.entity.*;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import static org.junit.Assert.*;
 
@@ -35,8 +35,12 @@ public class BlockExplorerTest {
 
     @Test
     public void getAddress () throws Exception {
-        Address address = client.getAddress("1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW", FilterType.All, 10, null);
-
+        Address address = null;
+        try {
+            address = client.getAddress("1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW", FilterType.All, 10, null);
+        }catch (APIException e){
+            Assume.assumeNoException(e);
+        }
         assertEquals("1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW", address.getAddress());
         assertEquals("07feead7f9fb7d16a0251421ac9fa090169cc169",
                 address.getHash160());
@@ -50,8 +54,13 @@ public class BlockExplorerTest {
     public void getUnspentOutputs () throws Exception {
         String address1 = "1FrWWFJ95Jq7EDgpkeBwVLAtoJMPwmYS7T";
         String address2 = "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn";
-        List<UnspentOutput> unspentOutputs = client.getUnspentOutputs(Arrays.asList(address1, address2), 6, 10);
 
+        List<UnspentOutput> unspentOutputs = null;
+        try {
+            unspentOutputs =  client.getUnspentOutputs(Arrays.asList(address1, address2), 6, 10);
+        }catch (APIException e){
+            Assume.assumeNoException(e);
+        }
         assertTrue(unspentOutputs != null && unspentOutputs.size() != 0);
         assertEquals("2e7ab41818ee0ab987d393d4c8bf5e436b6e8c15ef3535a2b3eac581e33c7472", unspentOutputs.get(0).getTransactionHash());
         assertEquals(20000, unspentOutputs.get(0).getValue());
@@ -64,8 +73,12 @@ public class BlockExplorerTest {
 
         List<String> list = Arrays.asList(address1, address2);
 
-        Map<String, Balance> balances = client.getBalance(list, FilterType.All);
-
+        Map<String, Balance> balances = null;
+        try {
+            balances =  client.getBalance(list, FilterType.All);
+        }catch (APIException e){
+            Assume.assumeNoException(e);
+        }
         assertEquals("Requires a 0 final balance",0, balances.get(address1).getFinalBalance());
         assertTrue("Requires more than 0 transactions", balances.get(address1).getTxCount() > 0);
         assertTrue("Requires more than 20000 satoshis received", balances.get(address1).getTotalReceived() > 2000);
@@ -79,8 +92,12 @@ public class BlockExplorerTest {
         String address1 = "1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW";
         String address2 = "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn";
         List<String> list = Arrays.asList(address1, address2);
-        MultiAddress multiAddress = client.getMultiAddress(list, FilterType.All, null, null);
-
+        MultiAddress multiAddress = null;
+        try {
+            multiAddress =  client.getMultiAddress(list, FilterType.All, null, null);
+        }catch (APIException e){
+            Assume.assumeNoException(e);
+        }
         //Addresses
         Optional<AddressSummary> addressSummary1 = multiAddress.getAddresses().stream().filter(e -> e.getAddress().equals(address1)).findFirst();
         assertTrue(addressSummary1.isPresent());
@@ -99,8 +116,12 @@ public class BlockExplorerTest {
     @Test
     public void getXpub () throws Exception {
         String address = "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn";
-        XpubFull xpub = client.getXpub(address, null, null, null);
-
+        XpubFull xpub = null;
+        try {
+            xpub =  client.getXpub(address, null, null, null);
+        }catch (APIException e){
+            Assume.assumeNoException(e);
+        }
         assertEquals(xpub.getAddress(),
                 "xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn");
         assertEquals("Requires 0 transactions",0, xpub.getTxCount());

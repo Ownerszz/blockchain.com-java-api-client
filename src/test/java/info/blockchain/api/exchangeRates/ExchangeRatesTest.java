@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import info.blockchain.api.AppTest;
+import info.blockchain.api.blockexplorer.entity.XpubFull;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,27 +47,36 @@ public class ExchangeRatesTest {
 
     /**
      * Test that GetTicker response is not empty.
-     * @throws APIException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
-    public void testGetTickerResponseIsNotEmpty() throws APIException, IOException {
+    public void testGetTickerResponseIsNotEmpty() throws Exception {
 
-        Map<String, Currency> ticker = exchange.getTicker();
+        Map<String, Currency> ticker = null;
 
+        try {
+            ticker =  exchange.getTicker();
+        }catch (APIException e){
+            Assume.assumeNoException(e);
+        }
         assertFalse(ticker.isEmpty());
 
     }
 
     /**
      * Test that the Currency response object is constructed properly with valid values from the response.
-     * @throws APIException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
-    public void testGetTickerResponseCurrencyValueIsNotNull() throws APIException, IOException {
+    public void testGetTickerResponseCurrencyValueIsNotNull() throws Exception {
 
-        Map<String, Currency> ticker = exchange.getTicker();
+        Map<String, Currency> ticker = null;
+
+        try {
+            ticker =  exchange.getTicker();
+        }catch (APIException e){
+            Assume.assumeNoException(e);
+        }
 
         final String currencyKey1 = "USD";
         final String currencyKey2 = "GBP";
@@ -95,13 +106,18 @@ public class ExchangeRatesTest {
 
     /**
      * Test that the function ToBTC is operational.
-     * @throws APIException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
-    public void testToBTCisOperational() throws APIException, IOException {
+    public void testToBTCisOperational() throws Exception {
+        BigDecimal value = null;
 
-        assertNotNull(exchange.toBTC("USD", new BigDecimal("8512.76")));
+        try {
+            value = exchange.toBTC("USD", new BigDecimal("8512.76"));
+        }catch (APIException e){
+            Assume.assumeNoException(e);
+        }
+        assertNotNull(value);
 
     }
 

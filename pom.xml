@@ -63,57 +63,7 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.5.201505241946</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
 
-      <plugin>
-        <groupId>com.github.github</groupId>
-        <artifactId>site-maven-plugin</artifactId>
-        <version>0.12</version>
-        <configuration>
-          <!-- git commit message -->
-          <message>Maven artifacts for ${project.version}</message>
-          <!-- disable webpage processing -->
-          <noJekyll>true</noJekyll>
-          <!-- matches distribution management repository url above -->
-          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
-          <!-- Keep older versions around -->
-          <merge>true</merge>
-          <!-- remote branch name -->
-          <branch>refs/heads/mvn-repo</branch>
-          <includes><include>**/*</include></includes>
-          <!-- github repo name -->
-          <repositoryName>api-v1-client-java</repositoryName>
-          <!-- github username -->
-          <repositoryOwner>blockchain</repositoryOwner>
-        </configuration>
-        <executions>
-          <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
-          <execution>
-            <goals>
-              <goal>site</goal>
-            </goals>
-            <phase>deploy</phase>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

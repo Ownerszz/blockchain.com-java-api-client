@@ -60,8 +60,9 @@ public class ExchangeRatesAsyncTest {
             while (!tickerAsync.isDone()){
                 waitCounter++;
             }
-            assertTrue("The getTickerAsync must run Async", waitCounter > 0);
             ticker = tickerAsync.get();
+
+            assertTrue("The getTickerAsync must run Async", waitCounter > 0);
         }catch (ExecutionException e){
             if (e.getCause().getClass() == APIException.class){
                 Assume.assumeNoException(e.getCause());
@@ -89,8 +90,8 @@ public class ExchangeRatesAsyncTest {
             while (!tickerAsync.isDone()){
                 waitCounter++;
             }
-            assertTrue("The getTickerAsync must run Async", waitCounter > 0);
             ticker = tickerAsync.get();
+            assertTrue("The getTickerAsync must run Async", waitCounter > 0);
         }catch (ExecutionException e){
         if (e.getCause().getClass() == APIException.class){
             Assume.assumeNoException(e.getCause());

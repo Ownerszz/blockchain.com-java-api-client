@@ -27,6 +27,25 @@ In order to prevent abuse some API methods require an API key approved with some
 
 The same API key can be used to bypass the request limiter.
 
+### Installing and implementing locally
+
+In order to compile/install this library successfully using Java 12 is recommended.
+
+<b>Example: Java Spring Boot project using Gradle</b>
+
+```
+repositories {
+	mavenLocal()
+	...
+}
+
+dependencies {
+    implementation 'info.blockchain:api:2.1.0'
+}
+
+```
+
+
 
 [api1]: https://blockchain.info/api/blockchain_api
 [api2]: https://blockchain.info/api/create_wallet

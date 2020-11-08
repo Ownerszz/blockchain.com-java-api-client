@@ -43,8 +43,8 @@ public class BlockExplorerAsyncTest {
             while (!addressFuture.isDone()){
                 waitCounter++;
             }
-            assertTrue("The getAddressAsync must run Async", waitCounter > 0);
             address = addressFuture.get();
+            assertTrue("The getAddressAsync must run Async", waitCounter > 0);
         }catch (ExecutionException e){
             if (e.getCause().getClass() == APIException.class){
                 Assume.assumeNoException(e.getCause());
@@ -73,8 +73,8 @@ public class BlockExplorerAsyncTest {
             while (!listFuture.isDone()){
                 waitCounter++;
             }
-            assertTrue("The getUnspentOutputsAsync must run Async", waitCounter > 0);
             unspentOutputs = listFuture.get();
+            assertTrue("The getUnspentOutputsAsync must run Async", waitCounter > 0);
         }catch (ExecutionException e){
             if (e.getCause().getClass() == APIException.class){
                 Assume.assumeNoException(e.getCause());
@@ -100,8 +100,8 @@ public class BlockExplorerAsyncTest {
             while (!mapFuture.isDone()){
                 waitCounter++;
             }
-            assertTrue("The getBalanceAsync must run Async", waitCounter > 0);
             balances = mapFuture.get();
+            assertTrue("The getBalanceAsync must run Async", waitCounter > 0);
         }catch (ExecutionException e){
             if (e.getCause().getClass() == APIException.class){
                 Assume.assumeNoException(e.getCause());
@@ -131,8 +131,8 @@ public class BlockExplorerAsyncTest {
             while (!multiAddressFuture.isDone()){
                 waitCounter++;
             }
-            assertTrue("The getMultiAddressAsync must run Async", waitCounter > 0);
             multiAddress = multiAddressFuture.get();
+            assertTrue("The getMultiAddressAsync must run Async", waitCounter > 0);
         }catch (ExecutionException e){
             if (e.getCause().getClass() == APIException.class){
                 Assume.assumeNoException(e.getCause());
@@ -167,9 +167,9 @@ public class BlockExplorerAsyncTest {
             while (!xpubFullFuture.isDone()){
                 waitCounter++;
             }
-            assertTrue("The getXpubAsync must run Async", waitCounter > 0);
-
             xpub = xpubFullFuture.get();
+
+            assertTrue("The getXpubAsync must run Async", waitCounter > 0);
         }catch (ExecutionException e){
             if (e.getCause().getClass() == APIException.class){
                 Assume.assumeNoException(e.getCause());

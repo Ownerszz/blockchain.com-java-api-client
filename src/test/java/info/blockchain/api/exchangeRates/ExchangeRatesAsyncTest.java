@@ -141,8 +141,8 @@ public class ExchangeRatesAsyncTest {
             while (!toBTCasync.isDone()){
                 waitCounter++;
             }
-            assertTrue("The toBTCAsync must run Async", waitCounter > 0);
             value = toBTCasync.get();
+            assertTrue("The toBTCAsync must run Async", waitCounter > 0);
         }catch (ExecutionException e){
             if (e.getCause().getClass() == APIException.class){
                 Assume.assumeNoException(e.getCause());

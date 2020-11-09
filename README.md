@@ -1,6 +1,6 @@
 # Blockchain API library (Java, v2.1.0)
 
-A clone from the official Java library for interacting with the Blockchain.info API (Java 12 required).
+A fork from the official Java library for interacting with the Blockchain.info API (Java 12 required).
 
 Link: https://github.com/blockchain/api-v1-client-java
 
